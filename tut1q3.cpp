@@ -1,0 +1,1 @@
+The OUTPUT is 10000
