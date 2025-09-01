@@ -1,138 +1,102 @@
 #include <iostream>
-#include <climits>
 using namespace std;
 
 class Stack {
 private:
-    int* arr;
+    int arr[100];  // Fixed size
     int top;
-    int capacity;
+    int maxSize;
 
 public:
-    // Constructor
-    Stack(int size) {
-        arr = new int[size];
-        capacity = size;
+    Stack(int size = 100) {
         top = -1;
+        maxSize = (size > 100) ? 100 : size;  // Limit to 100
     }
 
-    // Destructor
-    ~Stack() {
-        delete[] arr;
-    }
-
-    // Push operation
     void push(int x) {
         if (isFull()) {
-            cout << "Stack Overflow! Cannot push " << x << endl;
-            return;
+            cout << "Stack Full!" << endl;
+        } else {
+            arr[++top] = x;
+            cout << x << " pushed" << endl;
         }
-        arr[++top] = x;
-        cout << x << " pushed to stack" << endl;
     }
 
-    // Pop operation
-    int pop() {
+    void pop() {
         if (isEmpty()) {
-            cout << "Stack Underflow! Cannot pop from empty stack" << endl;
-            return INT_MIN;
+            cout << "Stack Empty!" << endl;
+        } else {
+            cout << arr[top--] << " popped" << endl;
         }
-        return arr[top--];
     }
 
-    // Check if stack is empty
     bool isEmpty() {
         return top == -1;
     }
 
-    // Check if stack is full
     bool isFull() {
-        return top == capacity - 1;
+        return top == maxSize - 1;
     }
 
-    // Peek operation (return top element without removing)
-    int peek() {
-        if (isEmpty()) {
-            cout << "Stack is empty!" << endl;
-            return INT_MIN;
-        }
-        return arr[top];
-    }
-
-    // Display stack contents
     void display() {
         if (isEmpty()) {
-            cout << "Stack is empty!" << endl;
-            return;
+            cout << "Stack Empty!" << endl;
+        } else {
+            cout << "Stack: ";
+            for (int i = top; i >= 0; i--) {
+                cout << arr[i] << " ";
+            }
+            cout << endl;
         }
-        cout << "Stack contents (top to bottom): ";
-        for (int i = top; i >= 0; i--) {
-            cout << arr[i] << " ";
+    }
+
+    void peek() {
+        if (isEmpty()) {
+            cout << "Stack Empty!" << endl;
+        } else {
+            cout << "Top: " << arr[top] << endl;
         }
-        cout << endl;
     }
 };
 
 int main() {
     int size, choice, value;
     
-    cout << "Enter the size of stack: ";
+    cout << "Enter stack size: ";
     cin >> size;
-    
-    Stack stack(size);
+    Stack s(size);
     
     do {
-        cout << "\n===== STACK OPERATIONS MENU =====" << endl;
-        cout << "1. Push" << endl;
-        cout << "2. Pop" << endl;
-        cout << "3. Check if Empty" << endl;
-        cout << "4. Check if Full" << endl;
-        cout << "5. Display Stack" << endl;
-        cout << "6. Peek (Top Element)" << endl;
-        cout << "7. Exit" << endl;
-        cout << "Enter your choice: ";
+        cout << "\n1. Push  2. Pop  3. isEmpty  4. isFull  5. Display  6. Peek  7. Exit" << endl;
+        cout << "Choice: ";
         cin >> choice;
         
         switch (choice) {
             case 1:
-                cout << "Enter value to push: ";
+                cout << "Enter value: ";
                 cin >> value;
-                stack.push(value);
+                s.push(value);
                 break;
             case 2:
-                value = stack.pop();
-                if (value != INT_MIN) {
-                    cout << "Popped element: " << value << endl;
-                }
+                s.pop();
                 break;
             case 3:
-                if (stack.isEmpty()) {
-                    cout << "Stack is empty" << endl;
-                } else {
-                    cout << "Stack is not empty" << endl;
-                }
+                cout << (s.isEmpty() ? "Empty" : "Not Empty") << endl;
                 break;
             case 4:
-                if (stack.isFull()) {
-                    cout << "Stack is full" << endl;
-                } else {
-                    cout << "Stack is not full" << endl;
-                }
+                cout << (s.isFull() ? "Full" : "Not Full") << endl;
                 break;
             case 5:
-                stack.display();
+                s.display();
                 break;
             case 6:
-                value = stack.peek();
-                if (value != INT_MIN) {
-                    cout << "Top element: " << value << endl;
-                }
+                s.peek();
                 break;
             case 7:
-                cout << "Exiting program..." << endl;
+                cout << "Exit" << endl;
                 break;
             default:
-                cout << "Invalid choice! Please try again." << endl;
+                cout << "Invalid choice!" << endl;
         }
     } while (choice != 7);
     
