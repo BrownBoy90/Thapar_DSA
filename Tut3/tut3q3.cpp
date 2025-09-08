@@ -64,18 +64,6 @@ public:
         } else {
             cout << "✗ The expression has UNBALANCED parentheses!" << endl;
         }
-        
-        // // Count different types of brackets
-        // int round = 0, square = 0, curly = 0;
-        // for (char c : expression) {
-        //     if (c == '(' || c == ')') round++;
-        //     else if (c == '[' || c == ']') square++;
-        //     else if (c == '{' || c == '}') curly++;
-        // }
-        
-        // cout << "Bracket count - Round: " << round 
-        //      << ", Square: " << square 
-        //      << ", Curly: " << curly << endl;
     }
 };
 
