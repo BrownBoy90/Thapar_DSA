@@ -1,65 +1,85 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
-class QueueForInterleave {
-private:
-    int arr[100];
-    int front, rear;
+class Queue {
+    int* arr;
+    int start, end, currSize, maxSize;
     
 public:
-    QueueForInterleave() {
-        front = 0;
-        rear = -1;
+    Queue(int size) {
+        maxSize = size;
+        arr = new int[maxSize];
+        start = -1;
+        end = -1;
+        currSize = 0;
     }
     
-    void enqueue(int x) {
-        arr[++rear] = x;
+    void push(int element) {
+        if (currSize == maxSize) return;
+        if (end == -1) {
+            start = 0;
+            end = 0;
+        } else {
+            end = (end + 1) % maxSize;
+        }
+        arr[end] = element;
+        currSize++;
     }
     
-    int dequeue() {
-        return arr[front++];
+    int pop() {
+        if (start == -1) return -1;
+        int element = arr[start];
+        if (currSize == 1) {
+            start = -1;
+            end = -1;
+        } else {
+            start = (start + 1) % maxSize;
+        }
+        currSize--;
+        return element;
     }
     
     bool isEmpty() {
-        return front > rear;
+        return currSize == 0;
     }
     
     int size() {
-        return rear - front + 1;
+        return currSize;
+    }
+    
+    ~Queue() {
+        delete[] arr;
     }
 };
 
-void interleaveQueue() {
-    QueueForInterleave q;
+int main() {
+    Queue q(10);
     // Sample input: 4 7 11 20 5 9
     int input[] = {4, 7, 11, 20, 5, 9};
     int n = 6;
     
     cout << "Original Queue: ";
     for (int i = 0; i < n; i++) {
-        q.enqueue(input[i]);
+        q.push(input[i]);
         cout << input[i] << " ";
     }
     cout << endl;
     
-    QueueForInterleave firstHalf;
+    Queue firstHalf(10);
     int qSize = q.size();
     
     // Extract first half
     for (int i = 0; i < qSize/2; i++) {
-        firstHalf.enqueue(q.dequeue());
+        firstHalf.push(q.pop());
     }
     
     // Interleave
     cout << "Interleaved Queue: ";
     while (!firstHalf.isEmpty()) {
-        cout << firstHalf.dequeue() << " ";
-        cout << q.dequeue() << " ";
+        cout << firstHalf.pop() << " ";
+        cout << q.pop() << " ";
     }
     cout << endl;
-}
-
-int main() {
-    interleaveQueue();
+    
     return 0;
 }

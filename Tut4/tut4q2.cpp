@@ -1,46 +1,58 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
 class CircularQueue {
-private:
-    int arr[100];
-    int front, rear, capacity, size;
+    int* arr;
+    int start, end, currSize, maxSize;
     
 public:
-    CircularQueue(int cap) {
-        capacity = cap;
-        front = 0;
-        rear = -1;
-        size = 0;
+    CircularQueue(int size) {
+        maxSize = size;
+        arr = new int[maxSize];
+        start = -1;
+        end = -1;
+        currSize = 0;
     }
     
-    void enqueue(int item) {
+    void enqueue(int element) {
         if (isFull()) {
             cout << "Queue is full!" << endl;
             return;
         }
-        rear = (rear + 1) % capacity;
-        arr[rear] = item;
-        size++;
-        cout << "Enqueued: " << item << endl;
+        if (end == -1) {
+            start = 0;
+            end = 0;
+        } else {
+            end = (end + 1) % maxSize;
+        }
+        arr[end] = element;
+        currSize++;
+        cout << "Enqueued: " << element << endl;
     }
     
-    void dequeue() {
+    int dequeue() {
         if (isEmpty()) {
             cout << "Queue is empty!" << endl;
-            return;
+            return -1;
         }
-        cout << "Dequeued: " << arr[front] << endl;
-        front = (front + 1) % capacity;
-        size--;
+        int element = arr[start];
+        if (currSize == 1) {
+            start = -1;
+            end = -1;
+        } else {
+            start = (start + 1) % maxSize;
+        }
+        currSize--;
+        cout << "Dequeued: " << element << endl;
+        return element;
     }
     
     bool isEmpty() {
-        return size == 0;
+        return currSize == 0;
     }
     
     bool isFull() {
-        return size == capacity;
+        return currSize == maxSize;
     }
     
     void display() {
@@ -49,24 +61,29 @@ public:
             return;
         }
         cout << "Queue: ";
-        int temp = front;
-        for (int i = 0; i < size; i++) {
+        int temp = start;
+        for (int i = 0; i < currSize; i++) {
             cout << arr[temp] << " ";
-            temp = (temp + 1) % capacity;
+            temp = (temp + 1) % maxSize;
         }
         cout << endl;
     }
     
-    void peek() {
+    int peek() {
         if (isEmpty()) {
             cout << "Queue is empty!" << endl;
-            return;
+            return -1;
         }
-        cout << "Front element: " << arr[front] << endl;
+        cout << "Front element: " << arr[start] << endl;
+        return arr[start];
+    }
+    
+    ~CircularQueue() {
+        delete[] arr;
     }
 };
 
-void circularQueueMenu() {
+int main() {
     CircularQueue q(10);
     int choice, item;
     
@@ -104,14 +121,9 @@ void circularQueueMenu() {
                 cout << (q.isFull() ? "Queue is full" : "Queue is not full") << endl;
                 break;
             case 7:
-                return;
+                return 0;
             default:
                 cout << "Invalid choice!" << endl;
         }
     }
-}
-
-int main() {
-    circularQueueMenu();
-    return 0;
 }

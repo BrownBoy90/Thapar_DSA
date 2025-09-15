@@ -1,42 +1,58 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
 class SimpleQueue {
-private:
-    int arr[100];
-    int front, rear, capacity;
+    int* arr;
+    int front, rear, currSize, maxSize;
     
 public:
     SimpleQueue(int size) {
-        capacity = size;
-        front = 0;
+        maxSize = size;
+        arr = new int[maxSize];
+        front = -1;
         rear = -1;
+        currSize = 0;
     }
     
-    void enqueue(int item) {
+    void enqueue(int element) {
         if (isFull()) {
             cout << "Queue is full!" << endl;
             return;
         }
-        arr[++rear] = item;
-        cout << "Enqueued: " << item << endl;
+        if (rear == -1) {
+            front = 0;
+            rear = 0;
+        } else {
+            rear++;
+        }
+        arr[rear] = element;
+        currSize++;
+        cout << "Enqueued: " << element << endl;
     }
     
-    void dequeue() {
+    int dequeue() {
         if (isEmpty()) {
             cout << "Queue is empty!" << endl;
-            return;
+            return -1;
         }
-        cout << "Dequeued: " << arr[front] << endl;
-        front++;
+        int element = arr[front];
+        if (currSize == 1) {
+            front = -1;
+            rear = -1;
+        } else {
+            front++;
+        }
+        currSize--;
+        cout << "Dequeued: " << element << endl;
+        return element;
     }
     
     bool isEmpty() {
-        return front > rear;
+        return currSize == 0;
     }
     
     bool isFull() {
-        return rear == capacity - 1;
+        return currSize == maxSize;
     }
     
     void display() {
@@ -51,16 +67,21 @@ public:
         cout << endl;
     }
     
-    void peek() {
+    int peek() {
         if (isEmpty()) {
             cout << "Queue is empty!" << endl;
-            return;
+            return -1;
         }
         cout << "Front element: " << arr[front] << endl;
+        return arr[front];
+    }
+    
+    ~SimpleQueue() {
+        delete[] arr;
     }
 };
 
-void simpleQueueMenu() {
+int main() {
     SimpleQueue q(10);
     int choice, item;
     
@@ -98,14 +119,9 @@ void simpleQueueMenu() {
                 cout << (q.isFull() ? "Queue is full" : "Queue is not full") << endl;
                 break;
             case 7:
-                return;
+                return 0;
             default:
                 cout << "Invalid choice!" << endl;
         }
     }
-}
-
-int main() {
-    simpleQueueMenu();
-    return 0;
 }
