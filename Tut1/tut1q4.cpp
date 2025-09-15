@@ -1,23 +1,23 @@
-// // Reverse the elements of an array 
-// #include<iostream>
-// using namespace std;
+// Reverse the elements of an array 
+#include<iostream>
+using namespace std;
 
-// int main() {
-//     int arr[] = {1,2,3,4,5,6,7,8,9,0};
-//     int i = 0;
-//     int total = sizeof(arr)/sizeof(arr[0]);
+int main() {
+    int arr[] = {1,2,3,4,5,6,7,8,9,0};
+    int i = 0;
+    int total = sizeof(arr)/sizeof(arr[0]);
 
-    // for(i = 0; i < total/2; i++) {
-    //    int temp = arr[i];
-    //    arr[i] = arr[total - i - 1];
-    //    arr[total - i - 1] = temp;
-    // }
+    for(i = 0; i < total/2; i++) {
+       int temp = arr[i];
+       arr[i] = arr[total - i - 1];
+       arr[total - i - 1] = temp;
+    }
 
-//     // printing
-//     for(i = 0; i< total; i++){
-//         cout<<arr[i]<<" ";
-//     }
-// }
+    // printing
+    for(i = 0; i< total; i++){
+        cout<<arr[i]<<" ";
+    }
+}
 
 // Find the matrix multiplication
 #include<iostream>
