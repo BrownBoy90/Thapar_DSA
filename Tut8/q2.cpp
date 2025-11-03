@@ -1,8 +1,5 @@
 #include <iostream>
 
-/**
- * A simple structure for a binary tree node.
- */
 struct Node {
     int data;
     Node* left;
@@ -25,9 +22,6 @@ Node* insert(Node* root, int key) {
     return root;
 }
 
-/**
- * [Task 2a] Search for an item (Recursive)
- */
 bool searchRecursive(Node* root, int key) {
     if (root == nullptr) return false;
     if (root->data == key) return true;
@@ -35,9 +29,6 @@ bool searchRecursive(Node* root, int key) {
     else return searchRecursive(root->right, key);
 }
 
-/**
- * [Task 2a] Search for an item (Non-Recursive)
- */
 bool searchNonRecursive(Node* root, int key) {
     Node* current = root;
     while (current != nullptr) {
